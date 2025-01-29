@@ -22,16 +22,24 @@ public:
     // Запрещаем копирование
     ArrayPtr(const ArrayPtr&) = delete;
  
-    ArrayPtr(ArrayPtr&&) noexcept 
+    ArrayPtr(ArrayPtr&& other) noexcept 
+        : raw_ptr_(other.raw_ptr_)
     {
+        other.raw_ptr_ = nullptr;
     }
  
     ~ArrayPtr() {
         delete[] raw_ptr_;
     }
  
-    // Запрещаем присваивание
-    ArrayPtr& operator=(const ArrayPtr&) = delete;
+    // Присваивание
+    ArrayPtr& operator=(const ArrayPtr& rhs) {
+        if (this != &rhs) {
+            ArrayPtr tmp(rhs);
+            swap(tmp);
+        }
+        return *this;
+    }
  
     // Прекращает владением массивом в памяти, возвращает значение адреса массива
     // После вызова метода указатель на массив должен обнулиться
