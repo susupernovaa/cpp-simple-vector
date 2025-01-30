@@ -223,7 +223,7 @@ public:
     // Если перед вставкой значения вектор был заполнен полностью,
     // вместимость вектора должна увеличиться вдвое, а для вектора вместимостью 0 стать равной 1
     Iterator Insert(ConstIterator pos, const Type& value) {
-        assert(pos >= items_.Get() && pos <= items_.Get() + size_);
+        assert(pos >= begin() && pos <= end());
         size_t index = static_cast<size_t>(pos - items_.Get());
         if (size_ >= capacity_) {
             size_t new_capacity = (capacity_ == 0 ? 1 : capacity_ * 2);
@@ -237,7 +237,7 @@ public:
     }
 
     Iterator Insert(ConstIterator pos, Type&& value) {
-        assert(pos >= items_.Get() && pos <= items_.Get() + size_);
+        assert(pos >= begin() && pos <= end());
         size_t index = static_cast<size_t>(pos - items_.Get());
         if (size_ >= capacity_) {
             size_t new_capacity = (capacity_ == 0 ? 1 : capacity_ * 2);
@@ -258,7 +258,7 @@ public:
  
     // Удаляет элемент вектора в указанной позиции
     Iterator Erase(ConstIterator pos) {
-        assert(pos >= items_.Get() && pos <= items_.Get() + size_);
+        assert(pos >= begin() && pos <= end());
         size_t index = static_cast<size_t>(pos - items_.Get());
         std::copy(std::make_move_iterator(items_.Get() + index + 1), 
         std::make_move_iterator(items_.Get() + size_), items_.Get() + index);
